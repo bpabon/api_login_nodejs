@@ -1,3 +1,6 @@
+# Esperar a que PostgreSQL esté disponible
+echo "Esperando a que PostgreSQL esté disponible..."
+/app/wait-for-it.sh postgres_bd:5432 --timeout=60 -- echo "PostgreSQL está disponible"
 
 # Comando para correr la migración de la base de datos con sequelize
 echo "Ejecutando el comando para crear la migración"

@@ -7,7 +7,7 @@ const createApp = require('./app');
 class ApiServer {
     constructor() {
         this.app = createApp();
-        this.puerto = process.env.PORT || 3000;
+        this.puerto = process.env.PORT || 5000;
     }
     listen() {
         this.app.listen(this.puerto, () => {

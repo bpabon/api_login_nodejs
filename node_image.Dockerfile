@@ -5,3 +5,6 @@ COPY package.json /app
 # Instalar las dependencias del proyecto
 RUN npm install
 COPY . /app
+RUN apt-get update && apt-get install -y wget
+RUN wget https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh && chmod +x wait-for-it.sh
+ENTRYPOINT ["/app/wait-for-it.sh", "postgres_bd:5432", "--", "/bin/sh", "-c", "/app/entrypoint.sh"]
