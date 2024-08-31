@@ -31,11 +31,6 @@ module.exports = {
         type: Sequelize.DataTypes.DATE,
         field: 'created_at',
         defaultValue: Sequelize.NOW
-      },
-      recovery_token: {
-        field: 'recovery_token',
-        allowNull: true,
-        type: Sequelize.DataTypes.STRING
       }
     });
   },
