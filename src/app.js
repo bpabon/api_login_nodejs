@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const { logErrors, errorHandler, boomErrorHandler, ormErrorHandler } = require('./middlewares/error.handler');
 const fileUpload = require('express-fileupload');
-
+const routerApi = require('./routes');
 
 // Función centralizada para la creación del servicio y reutilización
 const createApp = () => {
@@ -31,7 +31,7 @@ const createApp = () => {
     }));
     // require('./utils/auth');
     app.get("/", (req, res) => res.status(200).send("api is v1"));
-    // routerApi(app);
+    routerApi(app);
     app.use(logErrors);
     app.use(ormErrorHandler);
     app.use(boomErrorHandler);

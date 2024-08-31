@@ -9,15 +9,22 @@ function logErrors(err, req, res, next) {
 }
 
 function errorHandler(err, req, res, next) {
+    const status = err.status || 'fail';
     res.status(500).json({
-        message: err.message,
-        stack: err.stack,
+        status,
+        error: err,
+        msg: err.message,
+        stack: err.stack
     });
 }
-
+// Manejo de errores con la librería boom 
 function boomErrorHandler(err, req, res, next) {
     if (err.isBoom) {
         const { output } = err;
+        const payloadSpanish = err?.details?.map(detail => detail.message).join(', ');
+        if (payloadSpanish) {
+            output.payload.message = payloadSpanish || 'Desconocido';
+        }
         res.status(output.statusCode).json(output.payload);
     } else {
         next(err);
