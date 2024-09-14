@@ -6,7 +6,7 @@ A brief description of what this project does and who it's for
 
 ## Authors
 
-- [Branm Aldair Pabon Villamizar](https://www.github.com/octokatherine)
+- [Branm Aldair Pabon Villamizar](https://github.com/bpabon)
 
 
 ## Installation
