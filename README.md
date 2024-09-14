@@ -6,7 +6,7 @@ A brief description of what this project does and who it's for
 
 ## Authors
 
-- [Branm Aldair Pabon Villamizar](https://www.github.com/octokatherine)
+- [Branm Aldair Pabon Villamizar](https://github.com/bpabon)
 
 
 ## Installation
@@ -18,6 +18,8 @@ Install my-project with npm
   npm run docker:dev
   cd my-project
 ```
+# Dependencias 
+Emails (cerberusemail, handlebars)
 ## Running Tests
 
 To run tests, run the following command

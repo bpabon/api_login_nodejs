@@ -43,7 +43,7 @@ class AuthService {
       const token = jwt.sign(payload, config.jwtSecret, { expiresIn: '60min' });
       const link = `http://myfrontend.com/recovery?token=${token}`;
       await service.update(user.id, { recoveryToken: token });
-      return link
+      return {link: link, user:user}
   }
 }
 module.exports = AuthService;
