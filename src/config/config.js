@@ -22,6 +22,7 @@ const config = {
     jwtSecret: process.env.JWT_SECRET,
     smtpEmail: process.env.SMTP_EMAIL,
     smtpPassword: process.env.SMTP_PASSWORD,
+    urlPublic: process.env.URL_PUBLIC || 'http://localhost:5000',
 }
 
 // console.log('CONFIG', config);

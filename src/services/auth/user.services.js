@@ -14,16 +14,10 @@ class UserService {
   async findOne(id) {
       const user = await models.User.findByPk(id);
       if (!user) {
-        throw boom.notFound('usuario no encontrado');
+        throw Boom.notFound('usuario no encontrado');
       }
       return user;
   }
-  async update(id, changes) {
-      const user = await this.findOne(id);
-      const rta = await user.update(changes);
-      return rta;
-  }
-  // Actualizar el usuario por medio de la búsqueda del ID
   async update(id, changes) {
       const user = await this.findOne(id);
       const rta = await user.update(changes);
