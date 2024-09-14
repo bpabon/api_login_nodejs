@@ -8,7 +8,12 @@ const loginAuth = Joi.object({
     password: password.required()
 });
 
+const emailRecoveryPassword = Joi.object({
+    email: email.required()
+});
+
 
 module.exports = {
     loginAuth,
+    emailRecoveryPassword
 }

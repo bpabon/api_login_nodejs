@@ -23,8 +23,13 @@ module.exports = {
       },
       role: {
         allowNull: false,
-        type: Sequelize.DataTypes.STRING,
+        type: Sequelize.DataTypes.STRING(50),
         defaultValue: 'customer'
+      },
+      recovery_token: {
+        field: 'recovery_token',
+        allowNull: true,
+        type: Sequelize.DataTypes.STRING
       },
       createdAt: {
         allowNull: false,
@@ -32,15 +37,11 @@ module.exports = {
         field: 'created_at',
         defaultValue: Sequelize.NOW
       }
-    });
+    }
+  );
   },
 
   async down(queryInterface, Sequelize) {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
+    await queryInterface.dropTable(USER_TABLE);
   }
 };
