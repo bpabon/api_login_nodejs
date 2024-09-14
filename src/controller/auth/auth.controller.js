@@ -17,9 +17,9 @@ const emailRecoveryPasswordController = catchAsync(async (req, res, next) => {
         throw Boom.notFound('No fue posible encontrar un token');;
       }
     const emailService = new EmailService();
-    const sendEmail = await emailService.sendMail('aldair.apv@gmail.com', linkToken, linkToken);
-    console.log(sendEmail);
-    return res.status(200).json({mg:'sss'});
+    console.log(linkToken.link);
+    const sendEmail = await emailService.sendMail('bpabon1@udi.edu.co', 'Restablecimiento de Contraseña', {name: linkToken.user.email, link: linkToken.link});
+    return res.status(200).json({mg:'Correo enviado'});
 });
 module.exports = {
     validateLoginAuthController,
