@@ -1,10 +1,11 @@
 require('dotenv').config();
 const createApp = require('./app');
+const { config } = require('./config/config');
 
 class ApiServer {
     constructor() {
         this.app = createApp();
-        this.puerto = process.env.PORT || 5000;
+        this.puerto = config.port;
     }
     listen() {
         this.app.listen(this.puerto, () => {

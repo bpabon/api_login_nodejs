@@ -18,6 +18,8 @@ Install my-project with npm
   npm run docker:dev
   cd my-project
 ```
+# Dependencias 
+Emails (cerberusemail, handlebars)
 ## Running Tests
 
 To run tests, run the following command
