@@ -30,7 +30,7 @@ const createApp = () => {
         createParentPath: true
     }));
     // require('./utils/auth');
-    app.get("/", (req, res) => res.status(200).send("api is v1"));
+    // app.get("/", (req, res) => res.status(200).send("api is v1"));
     routerApi(app);
     app.use(logErrors);
     app.use(ormErrorHandler);
