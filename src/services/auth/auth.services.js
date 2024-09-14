@@ -41,7 +41,7 @@ class AuthService {
       }
       const payload = { sub: user.id, email: user.email };
       const token = jwt.sign(payload, config.jwtSecret, { expiresIn: '60min' });
-      const link = `http://myfrontend.com/recovery?token=${token}`;
+      const link = `${config.urlPublic}/recovery?token=${token}`;
       await service.update(user.id, { recoveryToken: token });
       return {link: link, user:user}
   }

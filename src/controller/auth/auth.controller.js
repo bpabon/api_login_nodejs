@@ -17,9 +17,8 @@ const emailRecoveryPasswordController = catchAsync(async (req, res, next) => {
         throw Boom.notFound('No fue posible encontrar un token');;
       }
     const emailService = new EmailService();
-    console.log(linkToken.link);
-    const sendEmail = await emailService.sendMail('bpabon1@udi.edu.co', 'Restablecimiento de Contraseña', {name: linkToken.user.email, link: linkToken.link});
-    return res.status(200).json({mg:'Correo enviado'});
+    await emailService.sendMail(linkToken.user.email, 'Restablecimiento de Contraseña', {name: linkToken.user.email, link: linkToken.link});
+    return res.status(200).json({mg:'Se ha enviado un correo electrónico con un enlace para su cambio de contraseña.'});
 });
 module.exports = {
     validateLoginAuthController,
