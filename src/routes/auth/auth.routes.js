@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { loginAuth,emailRecoveryPassword } = require('../../schemas');
-const { validateLoginAuthController,emailRecoveryPasswordController } = require('../../controller/auth/auth.controller');
+const { loginAuth,emailRecoveryPassword,changePassword,getToken } = require('../../schemas');
+const { validateLoginAuthController,emailRecoveryPasswordController,changePasswordController } = require('../../controller/auth/auth.controller');
 const validationHandler = require('../../middlewares/validator.handler');
 // Ruta para validar que las credenciales sean las correctas y retornar un token en caso de éxito
 router.post('/login',
@@ -16,5 +16,13 @@ router.post('/recoveryPassword',
         validationHandler(emailRecoveryPassword, 'body')
     ],
     emailRecoveryPasswordController
+);
+// Cambiar contraseñas -- Change password
+router.post('/changePassword/:token',
+    [
+        validationHandler(getToken, 'params'),
+        validationHandler(changePassword, 'body')
+    ],
+    changePasswordController
 );
 module.exports = router;
