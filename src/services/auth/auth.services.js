@@ -15,7 +15,7 @@ class AuthService {
       }
       const passwordCorrecta = await bcrypt.compare(password, user.password);
       if (!passwordCorrecta) {
-        throw Boom.unauthorized('Contraseña incorrecta.');;
+        throw Boom.unauthorized('Contraseña incorrecta.');
       }
       delete user.dataValues.password;
       delete user.dataValues.createdAt;
@@ -44,6 +44,15 @@ class AuthService {
       const link = `${config.urlPublic}/recovery?token=${token}`;
       await service.update(user.id, { recoveryToken: token });
       return {link: link, user:user}
+  }
+  // Verificar si el token es valido
+  verifyJwt(token){
+    try {
+      const payload = jwt.verify(token, config.jwtSecret);
+      return  payload;
+    } catch (error) {
+      throw Boom.unauthorized('El token ha expirado.');
+    }
   }
 }
 module.exports = AuthService;
