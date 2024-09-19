@@ -41,7 +41,7 @@ class AuthService {
       }
       const payload = { sub: user.id, email: user.email };
       const token = jwt.sign(payload, config.jwtSecret, { expiresIn: '60min' });
-      const link = `${config.urlPublic}/recovery?token=${token}`;
+      const link = `${config.urlPublic}/updatePasswordUrl/${token}`;
       await service.update(user.id, { recoveryToken: token });
       return {link: link, user:user}
   }
@@ -51,7 +51,7 @@ class AuthService {
       const payload = jwt.verify(token, config.jwtSecret);
       return  payload;
     } catch (error) {
-      throw Boom.unauthorized('El token ha expirado.');
+      throw Boom.unauthorized('Su sesión ha expirado');
     }
   }
 }

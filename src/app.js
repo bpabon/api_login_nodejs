@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { logErrors, errorHandler, boomErrorHandler, ormErrorHandler } = require('./middlewares/error.handler');
+const { logErrors, errorHandler, boomErrorHandler, ormErrorHandler,routeErrors } = require('./middlewares/error.handler');
 const fileUpload = require('express-fileupload');
 const routerApi = require('./routes');
 
@@ -9,29 +9,27 @@ const createApp = () => {
     const app = express();
 
     app.use(express.json());
-    const whitelist = ['http://localhost:4200'];
+    const whitelist = ['http://localhost:4200','http://localhost:5000'];
     const options = {
         origin: (origin, callback) => {
             if (whitelist.includes(origin) || !origin) {
                 callback(null, true);
             } else {
-                callback(new Error('No permitido'));
+                callback(new Error('URL No permitida'));
             }
         }
     }
     app.use(cors(options));
     app.use(express.json({ limit: '20mb' }));
     // require('../src/db/sequelize')
-    //directorio publico
-    app.use(express.static('public'));
     app.use(fileUpload({
         useTempFiles: true,
         tempFileDir: '/tmp/',
         createParentPath: true
     }));
-    // require('./utils/auth');
-    // app.get("/", (req, res) => res.status(200).send("api is v1"));
     routerApi(app);
+    // Middleware para manejar rutas no existentes
+    app.use(routeErrors);
     app.use(logErrors);
     app.use(ormErrorHandler);
     app.use(boomErrorHandler);
