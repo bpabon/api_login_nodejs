@@ -20,11 +20,11 @@ const emailRecoveryPasswordController = catchAsync(async (req, res, next) => {
     }
     const emailService = new EmailService();
     await emailService.sendMail(linkToken.user.email, 'Restablecimiento de Contraseña', { name: linkToken.user.email, link: linkToken.link });
-    return res.status(200).json({ mg: 'Se ha enviado un correo electrónico con un enlace para su cambio de contraseña.' });
+    return res.status(200).json({ msg: 'Se ha enviado un correo electrónico con un enlace para su cambio de contraseña.' });
 });
 //  Cambio de contraseñas -- Change password user
 const changePasswordController = catchAsync(async (req, res, next) => {
-    const user = new UserService()
+    const user = new UserService();
     const { token } = req.params;
     const decoded = serviceAuth.verifyJwt(token);
     const userData = await user.findOne(decoded.sub);
@@ -33,10 +33,20 @@ const changePasswordController = catchAsync(async (req, res, next) => {
     }
     const hash = await bcrypt.hash(req.body.password, 10);
     await user.update(userData.id, {recoveryToken: null, password: hash});
-    return res.status(200).json({ mg: 'La contraseña se ha cambiado de forma correcta.'});
-})
+    return res.status(200).json({ msg: 'La contraseña se ha cambiado de forma correcta.'});
+});
+// Registrar el nuevo usuario
+const newUserController = catchAsync(async (req,res,next)=>{
+    const user = new UserService();
+    const newUser = await user.create(req.body);
+    if(newUser){
+        return res.status(200).json({ msg: 'El usuario se creado de forma correcta.'});
+    }
+    throw Boom.badRequest(`Ocurrió un error al crear el usuario.`);
+});
 module.exports = {
     validateLoginAuthController,
     emailRecoveryPasswordController,
-    changePasswordController
+    changePasswordController,
+    newUserController
 }

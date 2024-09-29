@@ -66,7 +66,7 @@
             border-radius: 4px;
             box-sizing: border-box;
         }
-        input[type="password"] {
+        input[type="text"] {
             width: 100%;
             padding: 10px;
             border: 1px solid #ddd;
@@ -114,7 +114,7 @@
 <body>
     <div class="container">
         <h1>Cambio de contraseña</h1>
-        <form method="post" action="/api/v1/auth/changePassword/<%= token %>">
+        <form id="myFormChangePassword">
             <div class="form-group">
                 <label for="password">Contraseña:</label>
                 <div class="password-container">
@@ -136,13 +136,59 @@
             </div>
             <button type="submit">Cambiar</button>
         </form>
+        <div id="resultado"></div>
     </div>
     <script>
+        // Cambiar type de input para mostrar datos
         function togglePassword(id) {
             const passwordField = document.getElementById(id);
             const type = passwordField.type === 'password' ? 'text' : 'password';
             passwordField.type = type;
         }
+        // Mostrar los resultados en mi html 
+        function mostrarResultado(data,tipo) {
+            const resultadoDiv = document.getElementById('resultado');
+            let mensaje = `<p><strong>Ocurrió un error por favor  inténtelo de nuevo mas tarde</strong>`;
+            if(tipo === 'EXITO' && !Object.hasOwn(data, 'mg')){
+                mensaje= `
+                <p><strong>Alerta:</strong> ${data?.message ?? 'Sin Información'}</p> `;
+            }
+            if(Object.hasOwn(data, 'mg') ){
+                mensaje= `
+                <p><strong>Alerta:</strong> ${data?.mg ?? 'Sin Información'}</p> `;
+            }
+            resultadoDiv.innerHTML = mensaje;
+        }
+        document.getElementById('myFormChangePassword').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const verify_password = document.getElementById('verify_password').value;
+            const password = document.getElementById('password').value;
+            const fullUrl = window.location.href;
+            const apiIndex = fullUrl.indexOf('/api');
+            const urlUntilApi = apiIndex !== -1 ? fullUrl.substring(0, apiIndex) : fullUrl;
+            const url = `${urlUntilApi}/api/v1/auth/changePassword/<%= token %>`;
+            // Datos del formulario
+            const data = {
+                verify_password: verify_password,
+                password: password
+            };
+            // Enviar la petición
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                mostrarResultado(data,'EXITO');
+            })
+            .catch((error) => {
+                mostrarResultado(data,'ERROR');
+            });
+        });
     </script>
 </body>
 
