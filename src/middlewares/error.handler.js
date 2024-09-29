@@ -24,7 +24,7 @@ function boomErrorHandler(err, req, res, next) {
         const { output } = err;
         const payloadSpanish = err?.details?.map(detail => detail.message).join(', ');
         if (payloadSpanish) {
-            output.payload.message = payloadSpanish || 'Desconocido';
+            output.payload.message = payloadSpanish;
         }
         res.status(output.statusCode).json(output.payload);
     } else {

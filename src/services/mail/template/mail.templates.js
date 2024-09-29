@@ -1,6 +1,4 @@
 class TemplatesEmails {
-    constructor() {
-    }
     recoveryPassword() {
         const templates = `
         <!DOCTYPE html>
