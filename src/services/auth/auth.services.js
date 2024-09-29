@@ -6,7 +6,6 @@ const UserService = require('./user.services');
 const service = new UserService();
 
 class AuthService {
-  constructor() { }
   // Buscar usuario por correo  y validar si la contraseña es valida
   async getUser(email, password) {
       const user = await service.findByEmail(email);
