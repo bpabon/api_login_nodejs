@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cambio de contraseña</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Contenedor del formulario */
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        /* Título del formulario */
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        /* Estilos del formulario */
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Estilos para los grupos de campos */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        /* Estilos para las etiquetas */
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        /* Estilos para el contenedor de contraseña */
+        .password-container {
+            position: relative;
+        }
+
+        /* Estilos para los campos de entrada */
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        /* Estilos para el botón de mostrar/ocultar contraseña */
+        .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: #555;
+            font-size: 18px;
+        }
+
+        /* Estilos para el botón de mostrar/ocultar contraseña en hover */
+        .toggle-password:hover {
+            color: #007bff;
+        }
+
+        /* Estilos para el botón de envío */
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        /* Cambio de color del botón en hover */
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Cambio de contraseña</h1>
+        <form id="myFormChangePassword">
+            <div class="form-group">
+                <label for="password">Contraseña:</label>
+                <div class="password-container">
+                    <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña" required>
+                    <button type="button" class="toggle-password" onclick="togglePassword('password')">
+                        <i class="eye-icon">&#128065;</i>
+                    </button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="verify_password">Confirmar Contraseña:</label>
+                <div class="password-container">
+                    <input type="password" id="verify_password" name="verify_password" placeholder="Confirma tu contraseña"
+                        required>
+                    <button type="button" class="toggle-password" onclick="togglePassword('verify_password')">
+                        <i class="eye-icon">&#128065;</i>
+                    </button>
+                </div>
+            </div>
+            <button type="submit">Cambiar</button>
+        </form>
+        <div id="resultado"></div>
+    </div>
+    <script>
+        // Cambiar type de input para mostrar datos
+        function togglePassword(id) {
+            const passwordField = document.getElementById(id);
+            const type = passwordField.type === 'password' ? 'text' : 'password';
+            passwordField.type = type;
+        }
+        // Mostrar los resultados en mi html 
+        function mostrarResultado(data,tipo) {
+            const resultadoDiv = document.getElementById('resultado');
+            let mensaje = `<p><strong>Ocurrió un error por favor  inténtelo de nuevo mas tarde</strong>`;
+            if(tipo === 'EXITO' && !Object.hasOwn(data, 'mg')){
+                mensaje= `
+                <p><strong>Alerta:</strong> ${data?.message ?? 'Sin Información'}</p> `;
+            }
+            if(Object.hasOwn(data, 'mg') ){
+                mensaje= `
+                <p><strong>Alerta:</strong> ${data?.mg ?? 'Sin Información'}</p> `;
+            }
+            resultadoDiv.innerHTML = mensaje;
+        }
+        document.getElementById('myFormChangePassword').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const verify_password = document.getElementById('verify_password').value;
+            const password = document.getElementById('password').value;
+            const fullUrl = window.location.href;
+            const apiIndex = fullUrl.indexOf('/api');
+            const urlUntilApi = apiIndex !== -1 ? fullUrl.substring(0, apiIndex) : fullUrl;
+            const url = `${urlUntilApi}/api/v1/auth/changePassword/<%= token %>`;
+            // Datos del formulario
+            const data = {
+                verify_password: verify_password,
+                password: password
+            };
+            // Enviar la petición
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                mostrarResultado(data,'EXITO');
+            })
+            .catch((error) => {
+                mostrarResultado(data,'ERROR');
+            });
+        });
+    </script>
+</body>
+
+</html>

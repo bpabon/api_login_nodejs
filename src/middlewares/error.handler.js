@@ -1,4 +1,5 @@
 const { ValidationError } = require('sequelize');
+const path = require('path');
 const { config } = require('./../config/config');
 
 function logErrors(err, req, res, next) {
@@ -42,5 +43,7 @@ function ormErrorHandler(err, req, res, next) {
     next(err);
 }
 
-
-module.exports = { logErrors, errorHandler, boomErrorHandler, ormErrorHandler }
+function routeErrors(req, res, next) {
+    res.status(404).sendFile(path.join(__dirname, '../html/segurity/404.html'));
+}
+module.exports = { logErrors, errorHandler, boomErrorHandler, ormErrorHandler,routeErrors }
