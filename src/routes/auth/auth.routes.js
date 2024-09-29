@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { loginAuth,emailRecoveryPassword,changePassword,getToken } = require('../../schemas');
-const { validateLoginAuthController,emailRecoveryPasswordController,changePasswordController } = require('../../controller/auth/auth.controller');
+const { loginAuth,emailRecoveryPassword,changePassword,getToken,registryUser } = require('../../schemas');
+const { validateLoginAuthController,emailRecoveryPasswordController,changePasswordController,newUserController } = require('../../controller/auth/auth.controller');
 const validationHandler = require('../../middlewares/validator.handler');
+const {validUniqueUserMiddleware} = require('../../middlewares/index');
 // Ruta para validar que las credenciales sean las correctas y retornar un token en caso de éxito
 router.post('/login',
     [
@@ -24,5 +25,13 @@ router.post('/changePassword/:token',
         validationHandler(changePassword, 'body')
     ],
     changePasswordController
+);
+// Ruta para registrar un nuevo usuario -- register a new user
+router.post('/registerUser',
+    [
+        validationHandler(registryUser, 'body'),
+        validUniqueUserMiddleware
+    ],
+    newUserController
 );
 module.exports = router;
