@@ -12,12 +12,12 @@ if (envs[env]) {
 }
 
 require('dotenv').config(options);
-const urlDatabase = `postgres://${process.env.POSTGRES_USER}:${process.env.POSTGRES_PASSWORD}@postgres:5432/api`;
+// const urlDatabase = `postgres://${process.env.POSTGRES_USER}:${process.env.POSTGRES_PASSWORD}@postgres:5432/api`;
 const config = {
     env,
     isProd: process.env.NODE_ENV === 'production',
     port: process.env.PORT || 3000,
-    dbUrl: urlDatabase,
+    dbUrl: process.env.DATABASE_URL,
     apiKey: process.env.API_KEY,
     jwtSecret: process.env.JWT_SECRET,
     smtpEmail: process.env.SMTP_EMAIL,
@@ -25,6 +25,6 @@ const config = {
     urlPublic: process.env.URL_PUBLIC || 'http://localhost:5000',
 }
 
-// console.log('CONFIG', config);
+console.log('CONFIG', config);
 
 module.exports = { config };

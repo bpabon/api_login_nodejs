@@ -13,6 +13,14 @@ services:
       - 5432:5432
     volumes:
       - ./postgres_data:/var/lib/postgresql/data
+  postgres-e2e:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - 5433:5432
   pgadmin:
     depends_on:
       - postgres
@@ -25,14 +33,14 @@ services:
     ports:
       - 5050:80
     volumes:
-      - pgadmin_data:/var/lib/pgadmin
+      - ./pgadmin_data:/var/lib/pgadmin
   api-developer:
     depends_on:
       - pgadmin
     container_name: api_dev
     build:
       context: .
-      dockerfile: node_image.Dockerfile
+      dockerfile: dev.Dockerfile
     ports:
       - "5000:5000"
     volumes:

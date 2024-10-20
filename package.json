@@ -16,9 +16,9 @@
     "e2e": "NODE_ENV=e2e jest --config ./jest-e2e.json --verbose --forceExit --runInBand",
     "e2e:ci": "NODE_ENV=ci jest --config ./jest-e2e.json --verbose --forceExit --runInBand",
     "e2e:coverage": "NODE_ENV=e2e jest --config ./jest-e2e.json --verbose --forceExit --coverage",
-    "docker-compose-down": "docker-compose -f ./docker-compose.yml down",
+    "docker-compose-down:dev": "docker-compose -f ./docker-compose.yml down",
     "docker-compose-up:dev": "docker-compose -f ./docker-compose.yml up -d --build",
-    "docker:dev": "npm run docker-compose-down && npm run docker-compose-up:dev && docker-compose logs api-developer"
+    "docker:dev": "npm run docker-compose-down:dev && npm run docker-compose-up:dev && docker-compose logs api-developer"
   },
   "author": "BRANM ALDAIR PABON VILLAMIZAR",
   "license": "MIT",
