@@ -3,6 +3,7 @@ const cors = require('cors');
 const { logErrors, errorHandler, boomErrorHandler, ormErrorHandler,routeErrors } = require('./middlewares/error.handler');
 const fileUpload = require('express-fileupload');
 const routerApi = require('./routes');
+const swaggerSetup = require('./swagger/swagger');
 
 // Función centralizada para la creación del servicio y reutilización
 const createApp = () => {
@@ -28,6 +29,8 @@ const createApp = () => {
         createParentPath: true
     }));
     routerApi(app);
+    // Ruta para la documentación con swagger
+    swaggerSetup(app);
     // Middleware para manejar rutas no existentes
     app.use(routeErrors);
     app.use(logErrors);
