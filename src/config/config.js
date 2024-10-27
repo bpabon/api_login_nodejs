@@ -12,7 +12,6 @@ if (envs[env]) {
 }
 
 require('dotenv').config(options);
-// const urlDatabase = `postgres://${process.env.POSTGRES_USER}:${process.env.POSTGRES_PASSWORD}@postgres:5432/api`;
 const config = {
     env,
     isProd: process.env.NODE_ENV === 'production',

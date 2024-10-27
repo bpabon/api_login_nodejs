@@ -38,16 +38,19 @@ services:
     depends_on:
       - pgadmin
     container_name: api_dev
+    environment:
+      - NODE_ENV=${NODE_ENV}
     build:
-      context: .
-      dockerfile: dev.Dockerfile
+      context: .  # El contexto ahora es la raíz del proyecto
+      dockerfile: docker/dev/dev.Dockerfile  # La ruta relativa al Dockerfile desde el contexto    
     ports:
       - "5000:5000"
     volumes:
       # Ruta local y ruta del contenedor
       - "./src:/app/src"
     # command:  sh -c "npm run dev && npm run migrations:run"
-    entrypoint: ["/bin/sh", "-c", "/app/entrypoint.sh"]
+    # entrypoint: ["/bin/sh", "-c", "/app/entrypoint.sh"]
+    entrypoint: ["/bin/bash", "/app/entrypoint.sh"]
 volumes:
   pgadmin_data:
   postgres_data:
