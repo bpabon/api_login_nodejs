@@ -13,6 +13,14 @@ services:
       - 5432:5432
     volumes:
       - ./postgres_data:/var/lib/postgresql/data
+  postgres-e2e:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - 5433:5432
   pgadmin:
     depends_on:
       - postgres
@@ -25,21 +33,24 @@ services:
     ports:
       - 5050:80
     volumes:
-      - pgadmin_data:/var/lib/pgadmin
+      - ./pgadmin_data:/var/lib/pgadmin
   api-developer:
     depends_on:
       - pgadmin
     container_name: api_dev
+    environment:
+      - NODE_ENV=${NODE_ENV}
     build:
-      context: .
-      dockerfile: node_image.Dockerfile
+      context: .  # El contexto ahora es la raíz del proyecto
+      dockerfile: docker/dev/dev.Dockerfile  # La ruta relativa al Dockerfile desde el contexto    
     ports:
       - "5000:5000"
     volumes:
       # Ruta local y ruta del contenedor
       - "./src:/app/src"
     # command:  sh -c "npm run dev && npm run migrations:run"
-    entrypoint: ["/bin/sh", "-c", "/app/entrypoint.sh"]
+    # entrypoint: ["/bin/sh", "-c", "/app/entrypoint.sh"]
+    entrypoint: ["/bin/bash", "/app/entrypoint.sh"]
 volumes:
   pgadmin_data:
   postgres_data:
